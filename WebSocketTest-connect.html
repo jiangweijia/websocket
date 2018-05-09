@@ -1,0 +1,39 @@
+
+<!-- saved from url=(0027)http://192.168.210.48:8080/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Web Socket Test</title></head>
+<script type="text/javascript" src="reconnecting-websocket.js"></script>
+<body>
+<script type="text/javascript">
+var socket;
+  socket = new ReconnectingWebSocket("ws://192.168.165.11:8080/websocket");
+  socket.onmessage = function(event) {
+    var ta = document.getElementById('responseText');
+    ta.value = ta.value + '\n' + event.data
+  };
+  socket.onopen = function(event) {
+    var ta = document.getElementById('responseText');
+    ta.value = "Web Socket opened!";
+  };
+  socket.onclose = function(event) {
+    var ta = document.getElementById('responseText');
+    ta.value = ta.value + "Web Socket closed"; 
+  };
+
+
+function send(message) {
+  if (!window.WebSocket) { return; }
+  if (socket.readyState == WebSocket.OPEN) {
+    socket.send(message);
+  } else {
+    alert("The socket is not open.");
+  }
+}
+</script>
+<form onsubmit="return false;">
+<input type="text" name="message" value="Hello, World!"><input type="button" value="Send Web Socket Data" onclick="send(this.form.message.value)">
+<h3>Output</h3>
+<textarea id="responseText" style="width:500px;height:300px;"></textarea>
+</form>
+
+
+</body></html>
